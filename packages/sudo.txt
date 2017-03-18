@@ -1,0 +1,3 @@
+arch:sudo
+debian,ubuntu14.04,ubuntu16.04,ubuntu16.10:sudo
+fedora24,fedora25,el6,el7:sudo
