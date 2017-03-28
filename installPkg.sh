@@ -5,7 +5,7 @@
 #
 #         USAGE: ./installPkg.sh
 #
-#   DESCRIPTION: Install all pacakges from the packages directory.
+#   DESCRIPTION: Install all packages from the packages directory.
 #
 #       OPTIONS: --help, --version, --install
 #  REQUIREMENTS: ---
@@ -42,6 +42,7 @@ redhat_file=/etc/redhat-release
 color0='\e[0m'
 color1='\e[0;34m'
 
+pkgs_dir="${SCRIPT_DIR}/packages"
 
 redhat_distros=(
   "fedora"
@@ -114,11 +115,17 @@ usage ()
   echo "The following arguments are available."
   echo "  -h, --help        Print this help and exit."
   echo "  -v, --version     Print the version and exit."
+  echo "  -i, --install     Install all packages from ${SCRIPT_DIR}/packages/."
+  echo "  -c, --custom      Specify a custom packages directory from which to install."
   echo
   echo "Examples:"
   echo "${SCRIPT_NAME} -h"
   echo
   echo "${SCRIPT_NAME} -v"
+  echo
+  echo "${SCRIPT_NAME} -i"
+  echo
+  echo "${SCRIPT_NAME} -c ./path/to/packages"
   echo
 }	# ----------  end of function usage  ----------
 
@@ -479,6 +486,12 @@ while [ -n "$1" ] ; do
       break
       ;;
 
+    '-c' | '--custom' )
+      shift
+      pkgs_dir="$1"
+      break
+      ;;
+
     *)
       usage
       except "Invalid argument $1."
@@ -497,7 +510,7 @@ case "${linux_distribution}" in
 
     # Get list of packages to install.
     pkgs=($(
-      grep -h "${base_distro}" -R "${SCRIPT_DIR}/packages/" \
+      grep -h "${base_distro}" -R "${pkgs_dir}/" \
         | awk -F: '{ print $2 }'
     ))
     ;;
@@ -510,7 +523,7 @@ case "${linux_distribution}" in
 
     # Get list of packages to install.
     pkgs=($(
-      grep -h "${base_distro}${linux_release%%.*}" -R "${SCRIPT_DIR}/packages/" \
+      grep -h "${base_distro}${linux_release%%.*}" -R "${pkgs_dir}/" \
         | awk -F: '{ print $2 }'
     ))
     ;;
@@ -523,7 +536,7 @@ case "${linux_distribution}" in
 
     # Get list of packages to install.
     pkgs=($(
-      grep -h "${base_distro}${linux_release%%.*}" -R "${SCRIPT_DIR}/packages/" \
+      grep -h "${base_distro}${linux_release%%.*}" -R "${pkgs_dir}/" \
         | awk -F: '{ print $2 }'
     ))
     ;;
@@ -536,7 +549,7 @@ case "${linux_distribution}" in
 
     # Get list of packages to install.
     pkgs=($(
-      grep -h "${base_distro}" -R "${SCRIPT_DIR}/packages/" \
+      grep -h "${base_distro}" -R "${pkgs_dir}/" \
         | awk -F: '{ print $2 }'
     ))
     ;;
@@ -549,7 +562,7 @@ case "${linux_distribution}" in
 
     # Get list of packages to install.
     pkgs=($(
-      grep -h "${base_distro}${linux_release}" -R "${SCRIPT_DIR}/packages/" \
+      grep -h "${base_distro}${linux_release}" -R "${pkgs_dir}/" \
         | awk -F: '{ print $2 }'
     ))
     ;;
