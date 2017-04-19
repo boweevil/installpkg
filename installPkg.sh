@@ -372,13 +372,7 @@ archPackageInstall ()
   #    PARAMETERS:  [PACKAGES_LIST]
   #       RETURNS:  None
   #-------------------------------------------------------------------------------
-  if which pacaur &>/dev/null; then
-    pacaur --noconfirm -S "$@"
-  elif which yaourt &>/dev/null; then
-    yaourt --noconfirm -S "$@"
-  else
-    sudo pacman --noconfirm -S "$@"
-  fi
+  sudo pacman --noconfirm -S "$@"
 }	# ----------  end of function archPackageInstall  ----------
 
 
